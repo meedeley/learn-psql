@@ -1,0 +1,7 @@
+-- ONE TO ONE
+
+-- ONE TO MANY
+
+-- MANY TO ONE
+
+-- MANY TO MANY
