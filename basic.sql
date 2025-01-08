@@ -135,3 +135,73 @@ SELECT * FROM users;
 SELECT details -> 'Hobbies' FROM "users";
 SELECT details -> 'Country' FROM "users";
 SELECT details -> 'Regency' FROM "users";
+
+-- INDEXING
+/* 
+Types of Indexes in PostgreSQL
+
+PostgreSQL offers several index types, each suited for different use cases:
+
+1. B-tree Indexes (Default):
+
+The most common and general-purpose index type.
+Efficient for equality and range searches (=, <, >, <=, >=, BETWEEN).
+Suitable for most data types.
+Ordered, so they are also efficient for ORDER BY clauses.
+
+2. Hash Indexes:
+
+Only suitable for equality comparisons (=).
+Faster than B-tree indexes for equality lookups in some cases, but less versatile.
+Not crash-safe before PostgreSQL 10, so they were rarely used. Now they are crash-safe, but still less versatile.
+
+3. GIN Indexes (Generalized Inverted Index):
+
+Designed for indexing composite values like arrays and full-text search.
+Efficient for searching for elements within arrays or for words within documents.
+Used with the jsonb_path_ops operator class for JSONB indexing.
+
+4. GiST Indexes (Generalized Search Tree):
+
+Highly versatile and extensible.
+Used for indexing geometric data (PostGIS), full-text search, and other complex data types.
+Supports various search strategies depending on the data type.
+
+5. BRIN Indexes (Block Range Index):
+
+Designed for very large tables where the data is naturally ordered on the indexed column.
+Stores summary information about ranges of pages (blocks), making them much smaller than B-tree indexes.
+Suitable for time series data or other append-only data.
+*/
+-- CREATE INDEXING
+CREATE INDEX idx_users_name ON users(name);
+
+-- EXPLAIN ALGO INDEXING
+EXPLAIN ANALYSE SELECT * FROM users WHERE NAME = 'NICHOLA';
+
+-- HASH (for where = quantity)
+CREATE TABLE user_sessions (
+    session UUID PRIMARY KEY, -- unique session identifier
+    user_id INTEGER NOT NULL,
+    start_time TIMESTAMPTZ, -- timestamp with timezone
+    end_time TIMESTAMPTZ 
+);
+
+-- EDIT COLUMN user_sessions
+ALTER TABLE user_sessions
+    ALTER COLUMN start_time TYPE TIMESTAMPTZ,
+    ALTER COLUMN end_time TYPE TIMESTAMPTZ;
+
+ALTER TABLE user_sessions 
+    ALTER COLUMN start_time SET DEFAULT CURRENT_TIMESTAMP,
+    ALTER COLUMN end_time SET DEFAULT CURRENT_TIMESTAMP;
+
+-- INSERT DATA user_sessions
+INSERT INTO user_sessions ("session", "user_id") VALUES ('a1b2c3d4-e5f6-7890-1234-567890abcdef', 1);
+
+-- CREATE INDEXING USER_SESSIONS
+CREATE INDEX idx_user_sessions_session_id_hash ON user_sessions USING HASH (session);
+
+-- SELECT TYPE INDEXING
+SELECT * FROM user_sessions WHERE session = 'a1b2c3d4-e5f6-7890-1234-567890abcdef';
+
