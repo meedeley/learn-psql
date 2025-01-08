@@ -136,6 +136,9 @@ SELECT details -> 'Hobbies' FROM "users";
 SELECT details -> 'Country' FROM "users";
 SELECT details -> 'Regency' FROM "users";
 
+-- ALIAS 
+SELECT id, name, username as user FROM employees; 
+
 -- INDEXING
 /* 
 Types of Indexes in PostgreSQL
@@ -204,4 +207,8 @@ CREATE INDEX idx_user_sessions_session_id_hash ON user_sessions USING HASH (sess
 
 -- SELECT TYPE INDEXING
 SELECT * FROM user_sessions WHERE session = 'a1b2c3d4-e5f6-7890-1234-567890abcdef';
+
+-- EXPLAIN INDEXING
+EXPLAIN ANALYSE SELECT * FROM user_sessions WHERE session = 'a1b2c3d4-e5f6-7890-1234-567890abcdef';
+
 
