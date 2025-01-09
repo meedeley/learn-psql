@@ -261,9 +261,9 @@ WHERE
 if you just want to see the unique price without displaying other columns, just use:
  */
 SELECT
-    id,
+    DISTINCT id,
     name,
-    DISTINCT price
+    price
 FROM
     discounts;
 

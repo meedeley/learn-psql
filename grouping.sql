@@ -165,3 +165,25 @@ Sometimes we want to filter the data that we have grouped.
 For example, we want to display sales data with data above 3
 If we use WHERE in SELECT, this cannot be done       
  */
+-- HAVING CONDITION
+SELECT
+    product_name,
+    SUM(quantity)
+FROM
+    orders
+GROUP BY
+    product_name
+HAVING
+    SUM(quantity) > 3;
+
+SELECT
+    customer_name,
+    SUM(quantity)
+FROM
+    orders
+GROUP BY
+    customer_name
+HAVING
+    AVG(quantity) > 2;
+
+SELECT name, DISTINCT weight, quantity FROM fruits GROUP BY name;
