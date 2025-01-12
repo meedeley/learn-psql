@@ -147,4 +147,26 @@ SELECT * FROM customers JOIN accounts ON customers.customer_id = accounts.custom
 SELECT * FROM customers JOIN accounts as a ON a.customer_id = customers.customer_id;
 
 -- GET SOME DATA WITH ALIAS
-SELECT FROM customers as c JOIN accounts as a ON a.customer_id = c.customer_id;
+SELECT c.name, c.name, a.account_id, a.segment FROM customers as c JOIN accounts as a ON a.customer_id = c.customer_id;
+
+
+-- LEFT JOIN
+/* 
+
+SQL LEFT JOIN, also known as a LEFT OUTER JOIN, is a type of SQL JOIN operation that retrieves all records from the left table (table1) and the matching records from the right table (table2). If there are no matching records in the right table, NULL values are included for those columns.
+
+EXAMPLE : SELECT * FROM customers LEFT JOIN accounts as a ON a.customers_id = c.customer_id;
+
+LEFT TABLE : customers
+RIGHT TABLE : accounts
+
+if data in table accounts not match with table customers, null value will be returned
+*/
+
+-- LEFT JOIN IMPLEMENTS
+SELECT * FROM customers LEFT JOIN accounts as a ON a.customer_id = customers.customer_id;
+
+SELECT * FROM customers LEFT JOIN accounts as a ON customers.customer_id = a.customer_id;
+
+-- LEFT JOIN AT NOT DEPEND TABLE -- correct use right join
+SELECT * FROM accounts LEFT JOIN customers as c ON accounts.customer_id = c.customer_id;
