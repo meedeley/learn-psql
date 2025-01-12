@@ -143,5 +143,8 @@ FROM
 SELECT * FROM customers JOIN accounts ON accounts.customer_id = customers.customer_id;
 SELECT * FROM customers JOIN accounts ON customers.customer_id = accounts.customer_id; 
 
--- GET SOME DATA 
-SELECT a.account_id, name FROM customers JOIN accounts as a ON customers.customer_id = a.customer_id; 
+-- GET ALL DATA WITH ALIAS
+SELECT * FROM customers JOIN accounts as a ON a.customer_id = customers.customer_id;
+
+-- GET SOME DATA WITH ALIAS
+SELECT FROM customers as c JOIN accounts as a ON a.customer_id = c.customer_id;
