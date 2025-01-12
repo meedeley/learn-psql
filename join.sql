@@ -140,15 +140,34 @@ FROM
     join customers as c ON c.customer_id = accounts.customer_id;
 
 -- GET ALL DATA WHERE SELECT FROM NON-DEPENDENT TABLES
-SELECT * FROM customers JOIN accounts ON accounts.customer_id = customers.customer_id;
-SELECT * FROM customers JOIN accounts ON customers.customer_id = accounts.customer_id; 
+SELECT
+    *
+FROM
+    customers
+    JOIN accounts ON accounts.customer_id = customers.customer_id;
+
+SELECT
+    *
+FROM
+    customers
+    JOIN accounts ON customers.customer_id = accounts.customer_id;
 
 -- GET ALL DATA WITH ALIAS
-SELECT * FROM customers JOIN accounts as a ON a.customer_id = customers.customer_id;
+SELECT
+    *
+FROM
+    customers
+    JOIN accounts as a ON a.customer_id = customers.customer_id;
 
 -- GET SOME DATA WITH ALIAS
-SELECT c.name, c.name, a.account_id, a.segment FROM customers as c JOIN accounts as a ON a.customer_id = c.customer_id;
-
+SELECT
+    c.name,
+    c.name,
+    a.account_id,
+    a.segment
+FROM
+    customers as c
+    JOIN accounts as a ON a.customer_id = c.customer_id;
 
 -- LEFT JOIN
 /* 
@@ -161,12 +180,39 @@ LEFT TABLE : customers
 RIGHT TABLE : accounts
 
 if data in table accounts not match with table customers, null value will be returned
-*/
-
+ */
 -- LEFT JOIN IMPLEMENTS
-SELECT * FROM customers LEFT JOIN accounts as a ON a.customer_id = customers.customer_id;
+SELECT
+    *
+FROM
+    customers
+    LEFT JOIN accounts as a ON a.customer_id = customers.customer_id;
 
-SELECT * FROM customers LEFT JOIN accounts as a ON customers.customer_id = a.customer_id;
+SELECT
+    *
+FROM
+    customers
+    LEFT JOIN accounts as a ON customers.customer_id = a.customer_id;
 
 -- LEFT JOIN AT NOT DEPEND TABLE -- correct use right join
-SELECT * FROM accounts LEFT JOIN customers as c ON accounts.customer_id = c.customer_id;
+SELECT
+    *
+FROM
+    accounts
+    LEFT JOIN customers as c ON accounts.customer_id = c.customer_id;
+
+-- RIGHT JOIN
+/* 
+Right JOIN allows to join two table, keeping all the data or right table and only matching data of left table. Right JOIN is a type of outer join in SQL. It allows us to deal with missing values in database and also helps in analyzing relationships between data
+
+IN MY CASE TABLE accounts depends to customers so if i want to return value from table accounts and return table customer if have relation
+
+EXAMPLE = SELECT * FROM customers RIGHT JOIN 
+TABLE RIGHT = customers
+TABLE LEFT = accounts
+ */
+SELECT
+    *
+FROM
+    accounts
+    RIGHT JOIN customers as c ON accounts.customer_id = c.customer_id;
