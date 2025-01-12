@@ -144,4 +144,4 @@ SELECT * FROM customers JOIN accounts ON accounts.customer_id = customers.custom
 SELECT * FROM customers JOIN accounts ON customers.customer_id = accounts.customer_id; 
 
 -- GET SOME DATA 
-SELECT a.name, account_id FROM customers JOIN accounts as a ON customers.customer_id = a.customer_id; 
+SELECT a.account_id, name FROM customers JOIN accounts as a ON customers.customer_id = a.customer_id; 

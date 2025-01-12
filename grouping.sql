@@ -186,4 +186,4 @@ GROUP BY
 HAVING
     AVG(quantity) > 2;
 
-SELECT name, DISTINCT weight, quantity FROM fruits GROUP BY name;
+    SELECT name, DISTINCT weight, quantity FROM fruits GROUP BY name;
