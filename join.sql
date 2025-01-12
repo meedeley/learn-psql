@@ -216,3 +216,15 @@ SELECT
 FROM
     accounts
     RIGHT JOIN customers as c ON accounts.customer_id = c.customer_id;
+
+-- FULL JOIN
+
+/* 
+a type of SQL JOIN operation that retrieves all records from both tables, including matching and non-matching records.
+
+the key is : including non-matching records
+*/
+
+SELECT * FROM accounts as a FULL JOIN customers as c ON a.customer_id = c.customer_id;
+
+SELECT * FROM customers as c FULL JOIN accounts as a ON c.customer_id = a.customer_id;
