@@ -100,24 +100,69 @@ WITH
                     sales.customer_id
                 ORDER BY
                     sales.order_date
-            ) AS rank FROM sales
+            ) AS rank
+        FROM
+            sales
             JOIN menu ON sales.product_id = menu.product_id
     )
-    SELECT customer_id, product_name FROM ordered_sales WHERE rank = 1 GROUP BY customer_id, product_name;
+SELECT
+    customer_id,
+    product_name
+FROM
+    ordered_sales
+WHERE
+    rank = 1
+GROUP BY
+    customer_id,
+    product_name;
 
+/*
 
-    /*
-    
-    WITH : to create COMMON TABLE EXPRESSION with mean is current query that we gonna use for main query, its use for reusable query, easy to ride and efficiency
-    
-    DENSE RANK : for give a rank to rows in result of query base on specific order, not unlike RANK DENSE_RANK not passed rank when found same value, that's mean if 2 rows have same rank, the next rank will directly continues without a gap
-    
-    OVER : for flexibilty on agregation operator
-    
-    PARTITION : for split data by group
-    
-    Solution : 
-    Create a Common Table Expression (CTE) called ordered_sales_cte. Within the CTE, create a new column rank and calculate the row number using DENSE_RANK() window function. The PARTITION BY clause divides the data by customer_id, and the ORDER BY clause orders the rows within each partition by order_date.
-    In the outer query, select the appropriate columns and apply a filter in the WHERE clause to retrieve only the rows where the rank column equals 1, which represents the first row within each customer_id partition.
-    Use the GROUP BY clause to group the result by customer_id and product_name.
-     */
+WITH : to create COMMON TABLE EXPRESSION with mean is current query that we gonna use for main query, its use for reusable query, easy to ride and efficiency
+
+DENSE RANK : for give a rank to rows in result of query base on specific order, not unlike RANK DENSE_RANK not passed rank when found same value, that's mean if 2 rows have same rank, the next rank will directly continues without a gap
+
+OVER : for flexibilty on agregation operator
+
+PARTITION : for split data by group
+
+Solution : 
+Create a Common Table Expression (CTE) called ordered_sales_cte. Within the CTE, create a new column rank and calculate the row number using DENSE_RANK() window function. The PARTITION BY clause divides the data by customer_id, and the ORDER BY clause orders the rows within each partition by order_date.
+In the outer query, select the appropriate columns and apply a filter in the WHERE clause to retrieve only the rows where the rank column equals 1, which represents the first row within each customer_id partition.
+Use the GROUP BY clause to group the result by customer_id and product_name.
+ */
+-- What is the most purchased item on the menu and how many times was it purchased by all customers?
+SELECT
+    count(sales.product_id) as most_buying_item,
+    menu.product_name
+FROM
+    sales
+    JOIN menu ON sales.product_id = menu.product_id
+GROUP BY
+    sales.product_id,
+    menu.product_name
+ORDER BY
+    sales.product_id DESC
+LIMIT
+    1;
+
+-- Which item was the most popular for each customer?
+WITH most_popular AS (
+  SELECT 
+    sales.customer_id, 
+    menu.product_name, 
+    COUNT(menu.product_id) AS order_count,
+    DENSE_RANK() OVER(
+      PARTITION BY sales.customer_id 
+      ORDER BY COUNT(sales.customer_id) DESC) AS rank
+  FROM menu
+  JOIN sales
+    ON menu.product_id = sales.product_id
+  GROUP BY sales.customer_id, menu.product_name
+)
+SELECT 
+  customer_id, 
+  product_name, 
+  order_count
+FROM most_popular 
+WHERE rank = 1;
